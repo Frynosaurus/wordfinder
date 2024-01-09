@@ -9,7 +9,7 @@ class MainPage extends StatelessWidget {
     MainViewModel viewModel = MainViewModel();
     return Scaffold(
       body: Text(
-        viewModel.displayWord(),
+        viewModel.tabooWords.toString(),
         style: const TextStyle(
           fontSize: 40,
           decoration: TextDecoration.none,

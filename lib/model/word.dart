@@ -1,10 +1,8 @@
-class Word {
+import 'package:flutter/material.dart';
+
+class Word with ChangeNotifier {
   String word;
-  List<String> synonyms;
+  List<String> taboo;
 
-  Word(this.word, this.synonyms);
-
-  Word.fromMap(Map<String, dynamic> map)
-      : word = map['word'],
-        synonyms = List<String>.from(map['meanings']['synonyms']);
+  Word(this.word, this.taboo);
 }
