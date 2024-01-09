@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wordfinder/view/common/taboo_card.dart';
 import 'package:wordfinder/viewmodel/main_view_model.dart';
 
 class MainPage extends StatelessWidget {
@@ -6,21 +8,23 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MainViewModel viewModel = MainViewModel();
     return Scaffold(
-      body: Text(
-        viewModel.tabooWords.toString(),
-        style: const TextStyle(
-          fontSize: 40,
-          decoration: TextDecoration.none,
-        ),
+      body: Consumer<MainViewModel>(
+        builder: (context, viewModel, child) {
+          return const TabooCard();
+        },
       ),
     );
   }
 }
 
 void main() {
-  runApp(const MaterialApp(
-    home: MainPage(),
-  ));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MainViewModel(),
+      child: const MaterialApp(
+        home: MainPage(),
+      ),
+    ),
+  );
 }

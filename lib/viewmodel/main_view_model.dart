@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class MainViewModel with ChangeNotifier {
-  final String _baseApiUrl = 'https://api.datamuse.com/words?trg=';
+  final String _baseApiUrl = 'https://api.datamuse.com/words?rel_trg=';
 
   final String _randomWordApiUrl =
       'https://random-word-api.vercel.app/api?words=1';
 
-  String _randomWord = '';
+  List<dynamic> _randomWord = [];
   final List<String> _tabooWords = [];
-  List<String> get tabooWords => List<String>.from(_tabooWords);
+  List<String> get tabooWords => _tabooWords;
+  List<dynamic> get randomWord => _randomWord;
 
   MainViewModel() {
     _initialize();
@@ -24,16 +25,31 @@ class MainViewModel with ChangeNotifier {
 
   Future<void> _getRandomWord() async {
     Uri uriRandom = Uri.parse(_randomWordApiUrl);
-    http.Response responseRandom = await http.get(uriRandom);
 
-    _randomWord = jsonDecode(responseRandom.body);
+    try {
+      http.Response responseRandom = await http.get(uriRandom);
 
-    Uri uriTaboos = Uri.parse('$_baseApiUrl$_randomWord&max=5&sp=0');
-    http.Response responseTaboos = await http.get(uriTaboos);
+      if (responseRandom.statusCode == 200) {
+        _randomWord = jsonDecode(responseRandom.body);
+        print(_randomWord);
 
-    List<dynamic> topResponses = jsonDecode(responseTaboos.body);
-    for (dynamic response in topResponses) {
-      _tabooWords.add(response);
+        Uri uriTaboos = Uri.parse('$_baseApiUrl${_randomWord[0]}&max=5');
+        http.Response responseTaboos = await http.get(uriTaboos);
+
+        if (responseTaboos.statusCode == 200) {
+          List<dynamic> topResponses = jsonDecode(responseTaboos.body);
+          for (Map<String, dynamic> response in topResponses) {
+            _tabooWords.add(response['word']);
+            print(_tabooWords);
+          }
+        } else {
+          print('Error in getting taboos: ${responseTaboos.statusCode}');
+        }
+      } else {
+        print('Error in getting random word: ${responseRandom.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
     }
   }
 }
