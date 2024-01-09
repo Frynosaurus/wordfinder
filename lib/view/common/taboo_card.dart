@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wordfinder/viewmodel/main_view_model.dart';
+import 'package:wordfinder/viewmodel/taboo_card_viewmodel.dart';
 
-class TabooCard extends StatelessWidget {
-  const TabooCard({super.key});
+class TabooCardView extends StatelessWidget {
+  const TabooCardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class TabooCard extends StatelessWidget {
   }
 
   Widget _buildCard() {
-    return Consumer<MainViewModel>(
+    return Consumer<TabooViewModel>(
       builder: (context, viewModel, child) {
         return Column(
           children: [
@@ -72,7 +72,6 @@ class TabooCard extends StatelessWidget {
     }
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: elements,
     );
   }

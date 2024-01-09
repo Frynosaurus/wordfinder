@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Card with ChangeNotifier {
+class TabooCard with ChangeNotifier {
   String mainWord;
   List<String> synonyms;
 
-  Card(this.mainWord, this.synonyms);
+  TabooCard(this.mainWord, this.synonyms);
 }
