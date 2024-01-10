@@ -1,10 +1,9 @@
-// lib/viewmodel/taboo_card_viewmodel.dart
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class TabooViewModel with ChangeNotifier {
+class GameviewModel with ChangeNotifier {
   final String _baseApiUrl = 'https://api.datamuse.com/words?rel_trg=';
   final String _randomWordApiUrl =
       'https://random-word-api.vercel.app/api?words=1';
@@ -14,10 +13,14 @@ class TabooViewModel with ChangeNotifier {
   List<String> get tabooWords => _tabooWords;
   List<dynamic> get randomWord => _randomWord;
 
-  TabooViewModel() {
+  GameviewModel() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _initialize();
     });
+  }
+
+  void closeGame(BuildContext context) {
+    Navigator.pop(context);
   }
 
   Future<void> _initialize() async {
@@ -76,6 +79,11 @@ class TabooViewModel with ChangeNotifier {
 
   void generateNewTabooCard() {
     _generateNewTabooCard();
+    notifyListeners();
+  }
+
+  void nextCard() {
+    _initialize();
     notifyListeners();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wordfinder/viewmodel/taboo_card_viewmodel.dart';
+import 'package:wordfinder/viewmodel/game_view_model.dart';
 
 class TabooCardView extends StatelessWidget {
   const TabooCardView({super.key});
@@ -19,7 +19,7 @@ class TabooCardView extends StatelessWidget {
   }
 
   Widget _buildCard() {
-    return Consumer<TabooViewModel>(
+    return Consumer<GameviewModel>(
       builder: (context, viewModel, child) {
         return Column(
           children: [
