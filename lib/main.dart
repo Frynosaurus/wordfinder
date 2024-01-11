@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wordfinder/view/game_page.dart';
-import 'package:wordfinder/viewmodel/game_view_model.dart';
-import 'package:wordfinder/viewmodel/timer_view_model.dart';
+import 'package:wordfinder/services/navigation_service.dart';
+import 'package:wordfinder/view/main_page.dart';
+import 'package:wordfinder/viewmodel/main_view_model.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final NavigationService _navigationService = NavigationService();
+
+  MainApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => TimerViewModel()),
-          ChangeNotifierProvider(create: (context) => GameviewModel())
-        ],
-        child: const GamePage(),
+      navigatorKey: _navigationService.navigatorKey,
+      home: ChangeNotifierProvider(
+        create: (context) => MainViewModel(),
+        child: const MainPage(),
       ),
     );
   }

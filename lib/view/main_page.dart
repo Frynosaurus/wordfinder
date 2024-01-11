@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:wordfinder/services/navigation_service.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return _buildBody();
+    return _buildBody(context);
   }
 }
 
-Widget _buildBody() {
+Widget _buildBody(BuildContext context) {
   return Scaffold(
     body: Container(
       decoration: const BoxDecoration(
@@ -22,19 +23,21 @@ Widget _buildBody() {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildButton('Play a Game'),
-          _buildButton('Settings'),
+          _buildButton('Play a Game', context),
+          _buildButton('Settings', context),
         ],
       ),
     ),
   );
 }
 
-Widget _buildButton(String text) {
+Widget _buildButton(String text, BuildContext context) {
   return Center(
     child: ElevatedButton(
       child: Text(text),
-      onPressed: () {},
+      onPressed: () {
+        NavigationService().goToGameSettingsPage(context);
+      },
     ),
   );
 }

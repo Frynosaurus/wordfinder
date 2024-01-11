@@ -17,12 +17,12 @@ class TimerViewModel with ChangeNotifier {
         _seconds--;
         notifyListeners();
       } else {
-        _stopTimer();
+        stopTimer();
       }
     });
   }
 
-  void _stopTimer() {
+  void stopTimer() {
     _timer.cancel();
   }
 
@@ -31,7 +31,7 @@ class TimerViewModel with ChangeNotifier {
   int get initialSeconds => _initialSeconds;
 
   void resetTimer() {
-    _stopTimer();
+    stopTimer();
     _seconds = _initialSeconds;
     notifyListeners();
     _startTimer();

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:wordfinder/model/team.dart';
 
 class GameviewModel with ChangeNotifier {
   final String _baseApiUrl = 'https://api.datamuse.com/words?rel_trg=';
@@ -13,14 +14,37 @@ class GameviewModel with ChangeNotifier {
   List<String> get tabooWords => _tabooWords;
   List<dynamic> get randomWord => _randomWord;
 
-  GameviewModel() {
+  List<Team> teams = [
+    Team('', 0),
+    Team('', 0),
+  ];
+  int currentTeamIndex;
+
+  GameviewModel() : currentTeamIndex = 0 {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _initialize();
     });
   }
 
-  void closeGame(BuildContext context) {
-    Navigator.pop(context);
+  Team get currentTeam => teams[currentTeamIndex];
+
+  void updateTeamNames(String team1Name, String team2Name) {
+    teams[0].name = team1Name;
+    teams[1].name = team2Name;
+
+    notifyListeners();
+  }
+
+  void nextTurn() {
+    currentTeamIndex = (currentTeamIndex + 1) % teams.length;
+
+    notifyListeners();
+  }
+
+  void updateScore(int points) {
+    teams[currentTeamIndex].score += points;
+
+    notifyListeners();
   }
 
   Future<void> _initialize() async {

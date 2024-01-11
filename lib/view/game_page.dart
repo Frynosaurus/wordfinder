@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wordfinder/model/team.dart';
+import 'package:wordfinder/services/navigation_service.dart';
 import 'package:wordfinder/view/common/countdown_timer.dart';
 import 'package:wordfinder/view/common/taboo_card.dart';
 import 'package:wordfinder/viewmodel/game_view_model.dart';
@@ -28,8 +30,8 @@ class GamePage extends StatelessWidget {
           children: [
             _buildCloseButton(context),
             _buildHeader(),
-            _buildTeamText(),
-            _buildScore(),
+            _buildTeamInfo(context),
+            _buildScore(context),
             const Center(child: TabooCardView()),
             _buildButtonBar(context),
             _buildResetButton(context)
@@ -39,12 +41,33 @@ class GamePage extends StatelessWidget {
     );
   }
 
+  Widget _buildTeamInfo(BuildContext context) {
+    Team currentTeam = Provider.of<GameviewModel>(context).currentTeam;
+    return Text(
+      'Current Team: ${currentTeam.name}',
+      style: const TextStyle(fontSize: 20),
+    );
+  }
+
+  Widget _buildScore(BuildContext context) {
+    List<Team> teams = Provider.of<GameviewModel>(context).teams;
+    return Column(
+      children: teams.map((team) {
+        return Text(
+          '${team.name} Score: ${team.score}',
+          style: const TextStyle(fontSize: 18),
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildCloseButton(BuildContext context) {
-    GameviewModel viewModel =
-        Provider.of<GameviewModel>(context, listen: false);
+    TimerViewModel viewModel =
+        Provider.of<TimerViewModel>(context, listen: false);
     return IconButton(
       onPressed: () {
-        viewModel.closeGame(context);
+        viewModel.stopTimer();
+        NavigationService().goToMainPage(context);
       },
       icon: const Icon(Icons.close),
     );
@@ -63,10 +86,6 @@ class GamePage extends StatelessWidget {
 
   Widget _buildTeamText() {
     return const Text('Team A');
-  }
-
-  Widget _buildScore() {
-    return const Text('Score(42)');
   }
 
   Widget _buildResetButton(BuildContext context) {
